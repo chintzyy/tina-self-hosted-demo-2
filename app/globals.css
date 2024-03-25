@@ -19,9 +19,41 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
+    to bottom,
+    transparent,
+    rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+.josefin {
+  font-family: var(--font-josefin)
+}
+
+
+@layer base {
+  * {
+    @apply font-poppins;
+  }
+
+  h3 {
+    @apply text-3xl font-josefin font-semibold mb-2 mt-3;
+  }
+
+  p {
+    @apply text-base font-light;
+    @apply my-4;
+  }
+
+  ul {
+    @apply mb-4 list-disc ml-4;
+  }
+  
+  li {
+    @apply ml-2 text-base font-light;
+  }
+
+  p a {
+    @apply text-purple-800 underline underline-offset-1;
+  }
 }

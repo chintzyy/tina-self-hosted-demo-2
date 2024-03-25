@@ -1,12 +1,7 @@
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata = {
-  title: "Self Hosted Tina App",
-  description: "A Next.js app with TinaCMS",
-};
+import { josefin, poppins } from "~/components/util/fonts";
 
 export default function RootLayout({
   children,
@@ -15,7 +10,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${poppins} ${josefin}`}>
+        {children}
+        <Analytics />
+        <SpeedInsights />
+      </body>
     </html>
   );
 }

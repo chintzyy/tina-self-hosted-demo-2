@@ -6,6 +6,13 @@
       "dom.iterable",
       "esnext"
     ],
+    "baseUrl": ".",
+    "paths": {
+      "~/components/*": [ "components/*" ],
+      "@/tina/*": [ "tina/*" ],
+      "@/utils*": ["utils/*"], 
+    },
+    
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -32,8 +39,6 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".forestry/types.ts",
-    ".forestry/config.ts",
     ".next/types/**/*.ts"
   ]
 }

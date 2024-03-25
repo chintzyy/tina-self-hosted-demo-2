@@ -1,0 +1,64 @@
+{
+  "header": {
+    "icon": {
+      "name": "BiAbacus",
+      "color": "orange",
+      "style": "float"
+    },
+    "logo": "https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/dps-white-transparent.png",
+    "name": "Dardanup Primary School",
+    "color": "default",
+    "nav": [
+      {
+        "href": "/",
+        "label": "Home"
+      },
+      {
+        "href": "principals-message",
+        "label": "Principal's Message"
+      },
+      {
+        "href": "our-community",
+        "label": "Our Community"
+      },
+      {
+        "href": "information",
+        "label": "Information"
+      },
+      {
+        "href": "teaching-learning",
+        "label": "Teaching & Learning"
+      },
+      {
+        "href": "newsletters",
+        "label": "Newsletters"
+      },
+      {
+        "href": "forms",
+        "label": "Forms"
+      },
+      {
+        "href": "contact",
+        "label": "Contact"
+      }
+    ]
+  },
+  "contact": {
+    "phone": "08 9728 2060",
+    "email": "dardanup.ps@education.wa.edu.au",
+    "address": "Hayward St, Dardanup WA 6236"
+  },
+  "footer": {
+    "color": "default",
+    "social": {
+      "facebook": "/",
+      "twitter": "/",
+      "instagram": "/"
+    }
+  },
+  "theme": {
+    "color": "purple",
+    "font": "lato",
+    "darkMode": "light"
+  }
+}

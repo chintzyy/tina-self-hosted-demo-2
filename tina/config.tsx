@@ -5,6 +5,9 @@ import {
 import { defineConfig, LocalAuthProvider } from "tinacms";
 
 import { PageCollection } from "./collections/page";
+import { PostsCollection } from "./collections/post";
+import { AuthorsCollection } from "./collections/author";
+import { GlobalCollection } from "./collections/global";
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 
@@ -18,13 +21,18 @@ export default defineConfig({
     outputFolder: "admin",
   },
   media: {
-    tina: {
-      mediaRoot: "",
-      publicFolder: "public",
-      static: true,
+    loadCustomStore: async () => {
+      const pack = await import('next-tinacms-s3')
+      return pack.TinaCloudS3MediaStore
     },
   },
   schema: {
-    collections: [TinaUserCollection, PageCollection],
+    collections: [
+      TinaUserCollection,
+      PageCollection,
+      PostsCollection,
+      AuthorsCollection,
+      GlobalCollection,
+    ],
   },
 });

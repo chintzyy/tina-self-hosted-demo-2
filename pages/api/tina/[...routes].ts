@@ -18,7 +18,9 @@ const handler = TinaNodeBackend({
   databaseClient,
 });
 
-export default (req, res) => {
+const tinaRoutes = (req, res) => {
   // Modify the request here if you need to
   return handler(req, res);
 };
+
+export default tinaRoutes
