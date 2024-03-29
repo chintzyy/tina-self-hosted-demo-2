@@ -2,7 +2,7 @@
 metadata:
   title: Welcome to Llama central
   description: We got Llamas spittin everywhere
-title: index
+title: 'Welcome to Dardanup Primary School, Western Australia'
 slug: ''
 tagline: ''
 description: 'Welcome to Dardanup Primary School, Western Australia'

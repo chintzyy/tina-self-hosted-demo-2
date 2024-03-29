@@ -80,7 +80,7 @@ function Nav({ global }) {
                 {item.label}
                 {activeItem && (
                   <svg
-                    className={`absolute bottom-0 left-1/2 w-[180%] h-full -translate-x-1/2 -z-1 opacity-10 dark:opacity-15 ${activeBackgroundClasses[theme.color]}`}
+                    className={`absolute bottom-0 left-1/2 w-[120%] h-full -translate-x-1/2 -z-10 opacity-10 dark:opacity-15 ${activeBackgroundClasses[theme.color]}`}
                     preserveAspectRatio="none"
                     viewBox="0 0 230 230"
                     fill="none"

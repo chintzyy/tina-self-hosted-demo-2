@@ -2,16 +2,7 @@ import { Container } from "../util/container";
 import Nav from "./nav";
 import { Global, GlobalHeader, GlobalContact } from "../../tina/__generated__/types";
 import { client } from "../../tina/__generated__/databaseClient";
-
-const ContactBar = ({ contact }) => (
-  <div className="bg-white p-2 text-black text-xs text-right">
-    <ul className="flex justify-end list-none m-0 [&>li]:text-xs">
-      <li className="">{contact.phone}</li>
-      <li>{contact.email}</li>
-      <li>{contact.address}</li>
-    </ul>
-  </div>
-)
+import ContactBar from "./ContactBar";
 
 export const  Header = async () => {
   const res = await client.queries.global({ relativePath: 'index.json' })
@@ -42,7 +33,7 @@ export const  Header = async () => {
 
   return (
     <>
-      <ContactBar contact={contact} />
+      <ContactBar global={ JSON.stringify(res) } contact={contact} />
       <div
         className={`relative overflow-hidden font-light bg-gradient-to-b ${headerColorCss}`}
       >

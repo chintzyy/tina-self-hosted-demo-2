@@ -1,5 +1,3 @@
-"use client";
-
 import type { Page, PageBlocks } from "../tina/__generated__/types";
 import { Content } from "./blocks/content";
 import { Features } from "./blocks/features";
@@ -8,7 +6,6 @@ import { Testimonial } from "./blocks/testimonial";
 import { InfoTabs } from "./blocks/infoTabs";
 import { FormTabs } from "./blocks/formTabs";
 import { ContactInfo } from "./blocks/contactInfo";
-import { tinaField, useTina } from "tinacms/dist/react";
 import { NewsletterList } from "./blocks/newsletterList";
 import { HomeBox } from "./blocks/homeBox";
 import Placeholder from "./util/Placeholder";
@@ -26,7 +23,7 @@ const components = {
 }
 
 export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
-  const { data } = useTina(props)
+  const { data } = props
 
   return (
     <>
@@ -38,9 +35,8 @@ export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
             ? (
               <div 
                 key={i.toString() + block.__typename}
-                data-tina-field={tinaField(block)}
               >
-                <Component data={{...block as any}} /> 
+                <Component index={i} data={props} /> 
               </div>
             )
             : (

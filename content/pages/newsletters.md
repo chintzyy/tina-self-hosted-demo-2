@@ -10,6 +10,7 @@ blocks:
         status: published
       - publishedDate: 2024-03-17T16:00:00.000Z
         swayLink: 'https://sway.cloud.microsoft/s/FIHNx41VDxu60nth/embed'
+        status: published
     _template: newsletterList
 ---
 

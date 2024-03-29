@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from "react";
 import Link from "next/link";
 import { DateTime } from "luxon"
@@ -6,7 +8,7 @@ import { Section } from "../util/section";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import type { TinaTemplate } from "tinacms";
 import { PageBlocksFormTabs, PageBlocksFormTabsItems } from "../../tina/__generated__/types";
-import { tinaField } from "tinacms/dist/react";
+import { useTina, tinaField } from "tinacms/dist/react";
 import { Placeholder, uniqueValues, camelCaseToCapitalizedWithSpaces } from "../util";
 
 export const Tabs = ({ tabs, activeTab, setActiveTab }) => {
@@ -29,7 +31,6 @@ export const Tabs = ({ tabs, activeTab, setActiveTab }) => {
             key={flattenedTab}
             onClick={() => setActiveTab(flattenedTab)}
             className={`px-3 py-2 inline-block text-black text-2xs bg-white border rounded-t-lg rounded-b-lg mx-1 cursor-pointer ${activeTabStyling}`}
-            data-tina-field={tinaField(tab, "category")}
           >{tab}
           </li>
         )
@@ -58,15 +59,16 @@ const InfoLink = ({ title, document, item, isShown }) => (
     : null
 )
 
-export const InfoSection = ({ activeTab, items }) => {
+export const InfoSection = ({ activeTab, items, title }) => {
   if (!items.length) return <Placeholder message="Form item requires configuration" />
+  const isShown = (activeTab && activeTab.toLowerCase().replace(/\s/g, '') === title.toLowerCase().replace(/\s/g, '') || activeTab === '')
+  if (!isShown) return null
 
   return (
     <>
-      <h3>{camelCaseToCapitalizedWithSpaces(activeTab)}</h3>
+      <h3>{title}</h3>
       <ul>
         {items.map((item: PageBlocksFormTabsItems) => {
-          const isShown = (activeTab && activeTab.toLowerCase().replace(/\s/g, '') === item.category.toLowerCase().replace(/\s/g, '') || activeTab === '')
           return (
             <InfoLink 
               key={item.title}
@@ -82,11 +84,24 @@ export const InfoSection = ({ activeTab, items }) => {
   )
 }
 
-export const FormTabs = ({ data }: { data: PageBlocksFormTabs }) => {
+export const FormTabs = ({ data, index }: { data: PageBlocksFormTabs }) => {
   const [activeTab, setActiveTab] = useState('');
+  const { data: { page: { blocks }} } = useTina(data)
+  const block = blocks[index]
 
-  if (!data.items) return <Placeholder message="Form tabs component requires data" />
-  const tabs = uniqueValues(data.items.map(item => item?.category))
+
+  if (!block.items) return <Placeholder message="Form tabs component requires data" />
+  const tabs = uniqueValues(block.items.map(item => item?.category))
+
+  const orderedItems = block.items.reduce((acc, curr) => {
+    return {
+      ...acc,
+      [curr.category]: [
+        ...(acc[curr.category] ? acc[curr.category] : []),
+        curr,
+      ]
+    };
+  }, {});
 
   return (
     <Section>
@@ -99,11 +114,18 @@ export const FormTabs = ({ data }: { data: PageBlocksFormTabs }) => {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
-
-        <InfoSection
-          items={data.items}
-          activeTab={activeTab}
-        />
+        {
+          Object.keys(orderedItems).map(category => (
+            <>
+              <InfoSection
+                key={category}
+                items={orderedItems[category]}
+                activeTab={activeTab}
+                title={category}
+              />
+            </>
+          ))
+        }
       </Container>
     </Section>
   );

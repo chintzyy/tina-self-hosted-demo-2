@@ -33,9 +33,6 @@ export async function generateMetadata(
     return {
       title: res.data.page.title,
       description: res.data.page.description,
-      // openGraph: {
-      //   images: ["/some-specific-page-image.jpg", ...previousImages],
-      // },
     };
   } catch (error) {
     console.log('generateMetadata error:', error)
@@ -48,7 +45,6 @@ export async function generateMetadata(
 
 export default async function Page({ params, searchParams }: Props)  {
   const res = await getPageData(params.filename)
-  console.log(res.data.page.backgroundImage)
   return (
       <PageComponent
         // https://github.com/vercel/next.js/issues/47447

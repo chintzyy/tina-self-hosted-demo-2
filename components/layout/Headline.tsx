@@ -21,8 +21,8 @@ const Headline = (props: Omit<Page, "id" | "_sys" | "_values" | "children">) => 
             relative
             text-black
             text-4xl
-            uppercase
-            data-tina-field={tinaField(data.page, 'title')}"
+            uppercase"
+            data-tina-field={tinaField(data.page, 'title')}
           >
             {data.page.title}
           </h1>

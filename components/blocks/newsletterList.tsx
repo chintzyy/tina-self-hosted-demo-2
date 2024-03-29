@@ -1,28 +1,18 @@
+'use client'
+
 import React from "react";
 import Link from "next/link";
 import { DateTime } from "luxon";
 import { Container } from "../util/container";
 import { Section } from "../util/section";
-import type { TinaTemplate } from "tinacms";
 import { PageBlocksNewsletterList } from "../../tina/__generated__/types";
-import { tinaField } from "tinacms/dist/react";
+import { useTina, tinaField } from "tinacms/dist/react";
 
-function getFullMonthName(dateString) {
-  const date = new Date(dateString);
-  const month = new Intl.DateTimeFormat('en', { month: 'long' }).format(date);
-  return month;
-}
-
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-function NewsletterLinks({ newsletterItems, data }) {
-  if (!newsletterItems || !Array.isArray(newsletterItems)) {
+function NewsletterLinks({ index, data }) {
+  const { data: { page: { blocks }} } = useTina(data)
+  const block = blocks[index]
+  
+  if (!block || !Array.isArray(block.newsletterItems)) {
     return (
       <p>No newsletters currently available</p>
     )
@@ -32,21 +22,26 @@ function NewsletterLinks({ newsletterItems, data }) {
     <> 
       <h4 className="text-right">Published</h4>
       <ul>
-        { newsletterItems.map(item => {
+        { block.newsletterItems.map((item, i) => {
+          if (item.status && item.status.toLowerCase() !== 'published') { return null }
           return (
             <li
               key={item.publishedDate?.trim()}
               className="border-t-slate-400 border-t relative list-none first:border-t-0 [&:last-child>a]:pb-0 transition-all ease-in-out duration-150 hover:scale-[1.01]  [&:hover>a]:text-purple-900"
+              
+                  data-tina-Field={tinaField(block, "swayLink")}
             >
               <Link
                 href={item.swayLink}
                 target="_blank"
                 className="flex justify-between py-6 text-slate-900 no-underline"
-                tinaField={tinaField(item, "swayLink")}
+                data-tina-field={tinaField(item, "swayLink")}
               >
-                <h4>Maypole Newsletter - {DateTime.fromISO(item.publishedDate).toFormat('LLL yyyy')}</h4>
+                <h4
+
+                >Maypole Newsletter - {DateTime.fromISO(item.publishedDate).toFormat('LLL yyyy')}</h4>
                 <div
-                  tinaField={tinaField(item, "publishedDate")}
+                  data-tina-field={tinaField(item, "publishedDate")}
                 >
                   {DateTime.fromISO(item.publishedDate).toLocaleString(DateTime.DATE_FULL)}
                 </div>
@@ -61,14 +56,15 @@ function NewsletterLinks({ newsletterItems, data }) {
 }
 
 
-export const NewsletterList = ({ data }: { data: PageBlocksNewsletterList }) => {
+export const NewsletterList = ({ data, index }: { data: PageBlocksNewsletterList }) => {
+
   return (
     <Section>
       <Container size="large">
         {/* data */}
         <NewsletterLinks 
-          newsletterItems={data.newsletterItems}
           data={data}
+          index={index}
         /> 
       </Container>
     </Section>
@@ -86,7 +82,7 @@ export const NewsletterListBlockSchema: TinaTemplate = {
       ui: {
         itemProps: (item) => {
           return {
-            label: `Maypole-${formatDate(item?.publishedDate)}`,
+            label: `Maypole-${DateTime.fromISO(item?.publishedDate).toISODate()}`,
           };
         },
       },

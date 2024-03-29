@@ -1,10 +1,12 @@
+'use client'
+
 import React, { useState } from "react";
 import { Container } from "../util/container";
 import { Section } from "../util/section";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import type { TinaTemplate } from "tinacms";
 import { PageBlocksInfoTabs } from "../../tina/__generated__/types";
-import { tinaField } from "tinacms/dist/react";
+import { useTina, tinaField } from "tinacms/dist/react";
 import Placeholder from "../util/Placeholder";
 
 export const Tabs = ({ items, activeTab, setActiveTab }) => {
@@ -37,14 +39,17 @@ export const Tabs = ({ items, activeTab, setActiveTab }) => {
   )
 }
 
-export const InfoSection = ({ activeTab, items }) => {
+export const InfoSection = ({ activeTab, block }) => {
   return (
-    items.map(item => {
+    block.items.map(item => {
       const isShown = (activeTab && activeTab.toLowerCase().replace(/\s/g, '') === item.title.toLowerCase().replace(/\s/g, '') || activeTab === '')
       return (
         isShown
           ? (
-            <section css={{ display: isShown ? 'block' : 'none', marginBottom: 'inherit', position: 'relative' }}>
+            <section
+              data-tina-field={tinaField(item,'body')}
+              css={{ display: isShown ? 'block' : 'none', marginBottom: 'inherit', position: 'relative' }}
+            >
               <TinaMarkdown key={item.title} content={item.body} data-tina-field={tinaField(item, "body")} />
             </section>
           )
@@ -55,8 +60,11 @@ export const InfoSection = ({ activeTab, items }) => {
   )
 }
 
-export const InfoTabs = ({ data }: { data: PageBlocksInfoTabs }) => {
+export const InfoTabs = ({ data, index }: { data: PageBlocksInfoTabs }) => {
   const [activeTab, setActiveTab] = useState('');
+  const { data: { page: { blocks }} } = useTina(data)
+  const block = blocks[index]
+  
   return (
     <Section>
       <Container
@@ -64,13 +72,13 @@ export const InfoTabs = ({ data }: { data: PageBlocksInfoTabs }) => {
         width="medium"
       >
         <Tabs
-          items={data.items}
+          items={block.items}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
 
         <InfoSection
-          items={data.items}
+          block={block}
           activeTab={activeTab}
         />
       </Container>
