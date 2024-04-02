@@ -14,7 +14,6 @@ async function getPageData(filename: string) {
   try {
     const res = await client.queries.page({ relativePath: `${filename}.md` }) ?? null;
     if (!res?.data?.page) { notFound() }
-    tina.queries.post
     const parsedResponse = JSON.parse(JSON.stringify(res))
     return parsedResponse
   } catch (e) {

@@ -75,7 +75,7 @@ function Nav({ global }) {
               <Link
                 data-tina-field={tinaField(item, "label")}
                 href={`/${item.href}`}
-                className={`z-20 relative select-none text-sm inline-block tracking-wide transition duration-150 ease-out hover:opacity-100 py-8 px-4 ${activeItem ? `` : `opacity-70`}`}
+                className={`z-20 relative select-none text-sm inline-block tracking-wide transition duration-150 ease-out hover:opacity-100 py-8 px-2 ${activeItem ? `` : `opacity-70`}`}
               >
                 {item.label}
                 {activeItem && (

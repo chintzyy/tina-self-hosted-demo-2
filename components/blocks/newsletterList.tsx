@@ -71,7 +71,7 @@ export const NewsletterList = ({ data, index }: { data: PageBlocksNewsletterList
   );
 };
 
-export const NewsletterListBlockSchema: TinaTemplate = {
+export const newsletterListBlockSchema: TinaTemplate = {
   name: "newsletterList",
   label: "Newsletter List",
   fields: [

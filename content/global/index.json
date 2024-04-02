@@ -10,7 +10,7 @@
     "color": "default",
     "nav": [
       {
-        "href": "/",
+        "href": "home",
         "label": "Home"
       },
       {
@@ -24,6 +24,10 @@
       {
         "href": "information",
         "label": "Information"
+      },
+      {
+        "href": "photo-gallery",
+        "label": "Photo Gallery"
       },
       {
         "href": "teaching-learning",

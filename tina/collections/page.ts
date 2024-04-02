@@ -5,10 +5,11 @@ import { infoTabsBlockSchema } from "../../components/blocks/infoTabs";
 import { featureBlockSchema } from "../../components/blocks/features";
 import { heroBlockSchema } from "../../components/blocks/hero";
 import { testimonialBlockSchema } from "../../components/blocks/testimonial";
-import { NewsletterListBlockSchema } from "../../components/blocks/newsletterList";
+import { newsletterListBlockSchema } from "../../components/blocks/newsletterList";
 import { formTabsBlockSchema } from "../../components/blocks/formTabs";
 import { contactInfoBlockSchema } from "../../components/blocks/contactInfo";
 import { homeBoxBlockSchema } from "../../components/blocks/homeBox";
+import { imageGalleryBlockSchema } from "../../components/blocks/imageGallery";
 
 export const PageCollection: Collection = {
   label: "Pages",
@@ -78,10 +79,11 @@ export const PageCollection: Collection = {
         contentBlockSchema,
         testimonialBlockSchema,
         infoTabsBlockSchema,
-        NewsletterListBlockSchema,
+        newsletterListBlockSchema,
         formTabsBlockSchema,
         contactInfoBlockSchema,
         homeBoxBlockSchema,
+        imageGalleryBlockSchema,
       ],
     },
   ],

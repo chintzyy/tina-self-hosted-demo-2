@@ -4,7 +4,7 @@ import { Header } from "~/components/layout/header";
 
 export function LayoutWrapper(props: {
 }) {
-  const isNotHome = (props.data.page._sys.filename !== 'index')
+  const isNotHome = (props.data?.page._sys.filename !== 'index')
   return (
     <>
       <Backdrop image={props.data?.page?.backgroundImage} />

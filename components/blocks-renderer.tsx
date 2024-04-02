@@ -8,6 +8,7 @@ import { FormTabs } from "./blocks/formTabs";
 import { ContactInfo } from "./blocks/contactInfo";
 import { NewsletterList } from "./blocks/newsletterList";
 import { HomeBox } from "./blocks/homeBox";
+import { ImageGallery } from "./blocks/imageGallery";
 import Placeholder from "./util/Placeholder";
 
 const components = {
@@ -20,6 +21,7 @@ const components = {
   PageBlocksFormTabs: FormTabs,
   PageBlocksContact: ContactInfo,
   PageBlocksHomeBoxes: HomeBox,
+  PageBlocksImageGallery: ImageGallery,
 }
 
 export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
