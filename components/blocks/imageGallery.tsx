@@ -24,13 +24,17 @@ export const ImageGallery = ({ data, index }: { data: PageBlocksImageGallery }) 
       >
         <ul className="list-none flex flex-wrap">
           {
-            block.gallery?.map(item => {
+            block.gallery?.map(( item, i ) => {
               const prevImage = item.images && item.images.length ? item.images[0].src : null
               if (!item.title || !item.images || item.images?.length < 1 || !prevImage) return null
-              // console.log('item: ', item)
+              console.log('item: ', item, block.gallery, block)
 
               return (
-                <li key={item.title} className="w-fit max-w-80 list-none shadow-lg bg-white p-2">
+                <li
+                  key={item.title}
+                  className="w-fit max-w-80 list-none shadow-lg bg-white p-2"
+                  data-tina-field={tinaField(block.gallery[i], 0)}
+                >
                   <div className="relative w-64 h-64">
                     <Link href={`/photo-gallery/${item.slug}`}> 
                       <Image
