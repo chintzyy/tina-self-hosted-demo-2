@@ -5,21 +5,6 @@ import env from "@/utils/env.mjs"
 
 export const config = mediaHandlerConfig;
 
-const authorized = async (req: NextApiRequest): Promise<boolean> => {
-  try {
-    if (env.isDev) {
-      return true;
-    }
-
-    const user = await isAuthorized(req);
-
-    return (user && user.verified) as boolean;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
-};
-
 export default createMediaHandler({
   config: {
     credentials: {
@@ -29,5 +14,19 @@ export default createMediaHandler({
     region: env.S3_REGION,
   },
   bucket: env.S3_BUCKET,
-  authorized,
+  authorized: async (req: NextApiRequest): Promise<boolean> => {
+    if (env.isDev) {
+      console.log('authorized as this is a dev login')
+      return true;
+    }
+
+    try {
+      const user = await isAuthorized(req);
+      console.log('Authorizing user... ', user)
+      return (user && user.verified) as boolean;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  },
 });

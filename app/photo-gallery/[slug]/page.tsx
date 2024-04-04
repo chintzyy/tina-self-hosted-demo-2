@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { LayoutWrapper } from "../../../components/layout/LayoutWrapper";
 import { ImageGallery } from "~/components/blocks/imageGallery";
 import GalleryTiles from "./GalleryTiles";
@@ -16,7 +17,6 @@ async function getPhotoGalleryData() {
 
 
 export default async function Page({ params, searchParams })  {
-  console.log(params)
   const res = await getPhotoGalleryData()
   return (
     <LayoutWrapper {...res}>
@@ -24,6 +24,7 @@ export default async function Page({ params, searchParams })  {
         data={res.data}
         query={res.query}
         variables={res.variables}
+        slug={params.slug}
       />
       {/* <Blocks {...props} /> */}
     </LayoutWrapper>
