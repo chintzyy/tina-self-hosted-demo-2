@@ -1,4 +1,5 @@
 import { Collection } from "tinacms";
+import { TinaCMS, Form,  } from "tinacms";
 
 import { contentBlockSchema } from "../../components/blocks/content";
 import { infoTabsBlockSchema } from "../../components/blocks/infoTabs";
@@ -16,6 +17,46 @@ export const PageCollection: Collection = {
   name: "page",
   path: "content/pages",
   ui: {
+    beforeSubmit: async ({
+      form,
+      cms,
+      values,
+    }: {
+        form: Form
+        cms: TinaCMS
+        values: Record<string, any>
+      }) => {
+      // console.log('beforeSubmit...: ', {form, cms, values})
+      if (values?.blocks.some(b => b._template === "imageGallery")) {
+        const updatedValues = { ...values };
+        await Promise.all(updatedValues.blocks.map(async element => {
+          if (element._template === 'imageGallery') {
+            await Promise.all(element.gallery.map(async elem => {
+              if (!elem.images) return Promise.resolve()
+              await Promise.all(elem.images.map(async el => {
+                if (el.meta.width === null || el.meta.height === null) {
+                  const getImageDimensions = await fetch(`http://localhost:3000/api/imageMetadata?url=${el.src}`);
+                  const metaData = await getImageDimensions.json();
+                  el.meta = {
+                    ...metaData,
+                  };
+                }
+              }));
+            }));
+          }
+        }));
+      }
+      if (form.crudType === 'create') {
+        return {
+          ...values,
+          createdAt: new Date().toISOString(),
+        }
+      } 
+      return {
+        ...values,
+        lastUpdated: new Date().toISOString(),
+      }
+    }, 
     router: ({ document }) => {
       /* Show the visual editor for every page collection */      
       return document._sys.filename;
@@ -63,6 +104,22 @@ export const PageCollection: Collection = {
       label: "Background Image",
       name: "backgroundImage",
       description: "Display an image as the background of this page",
+    },
+    {
+      type: "string",
+      label: 'Created At',
+      name: "createdAt",
+      ui:{
+        component: 'hidden',
+      }
+    },
+    {
+      type: "string",
+      label: 'Updated At',
+      name: "lastUpdated",
+      ui:{
+        component: 'hidden',
+      }
     },
     {
       type: "object",
