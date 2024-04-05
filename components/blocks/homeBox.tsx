@@ -5,7 +5,6 @@ import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { useTina, tinaField } from "tinacms/dist/react";
 import { ColorPickerInput } from "../../tina/fields/color";
 import { IconPickerInput } from "../../tina/fields/icon";
-import type { TinaTemplate } from "tinacms";
 import { PageBlocksHomeBoxes, PageBlocksHomeBoxesHomeBox } from "../../tina/__generated__/types";
 import { Placeholder, Icon } from "../util";
 

@@ -1,9 +1,13 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 import sharp from 'sharp'
-import { PutObjectCommand, S3Client, ListBucketsCommand } from "@aws-sdk/client-s3";
-import env from '../../utils/env.mjs'
+import Sentry from "@sentry/nextjs";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import env from '~/utils/env'
+import Error from "app/error";
 
 async function processImages(buffer) {
   // Create thumbnail and normal-sized image in parallel
+  try {
   const [thumbnailBuffer, largeBuffer] = await Promise.all([
     sharp(buffer)
     .resize({
@@ -26,6 +30,10 @@ async function processImages(buffer) {
   ]);
 
   return { thumbnailBuffer, largeBuffer };
+  } catch (error) {
+    // Sentry.captureException(error);
+    throw Error(error)
+  }
 }
 
 async function pushbufferToS3(imageBuffers, filename) {
@@ -56,25 +64,27 @@ async function pushbufferToS3(imageBuffers, filename) {
   ])
     .catch((err) => {
       console.error('Pushing images to AWS s3 failed:', err)
-      throw err
+      throw Error(err)
     })
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Ensure the request is a POST request
   if (req.method !== 'GET') {
+    Sentry.captureMessage(`/metadata endpoint was evoked with the ${req.method} method`)
     return res.status(405).end(); // Method Not Allowed
   }
   const { url } = req.query;
 
   if (!url) {
+    Sentry.captureMessage('Missing URL parameter passed to imageMetadata endpoint')
     return res.status(400).json({ error: 'Missing URL parameter' });
   }
 
   try {
-
     const response = await fetch(url); 
     if (!response.ok) {
+      Sentry.captureMessage(`Undable to fetch ${url}. Failed to create thumbnails`)
       return res.status(response.status).json({ error: 'Failed to fetch image' });
     } 
     // Get the image buffer from the request body
@@ -107,6 +117,7 @@ export default async function handler(req, res) {
     res.status(200).json(images);
   } catch (error) {
     console.error('Error:', error);
+    Sentry.captureException(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }

@@ -1,4 +1,4 @@
-import { cleanEnv, url, str, makeValidator, EnvMissingError, EnvError } from 'envalid'
+import { cleanEnv, str, makeValidator, EnvMissingError } from 'envalid'
 
 const validStr = makeValidator((x) => {
   if (x.length < 1 ) { 
@@ -13,7 +13,7 @@ const env = cleanEnv(process.env, {
   S3_SECRET_KEY: validStr(),
   S3_BUCKET_DOMAIN: validStr(),
   NODE_ENV: str({ choices: ['development', 'production'] }),
-  IMAGE_DOMAINS: validStr(),
+  NEXTAUTH_SECRET: validStr(),
 })
 
 export default env

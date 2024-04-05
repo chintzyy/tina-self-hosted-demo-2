@@ -1,7 +1,7 @@
 import { isAuthorized } from "@tinacms/auth";
 import type { NextApiRequest } from "next";
 import { mediaHandlerConfig, createMediaHandler } from "next-tinacms-s3/dist/handlers";
-import env from "@/utils/env.mjs"
+import env from "~/utils/env"
 
 export const config = mediaHandlerConfig;
 

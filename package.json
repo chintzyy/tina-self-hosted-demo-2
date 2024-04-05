@@ -27,6 +27,7 @@
     "@aws-sdk/client-s3": "^3.540.0",
     "@aws-sdk/credential-providers": "^3.540.0",
     "@headlessui/react": "^1.7.18",
+    "@sentry/nextjs": "^7.105.0",
     "@tinacms/auth": "^1.0.4",
     "@tinacms/cli": "^1.5.43",
     "@tinacms/datalayer": "^1.2.33",

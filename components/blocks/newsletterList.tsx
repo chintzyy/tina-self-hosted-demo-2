@@ -11,7 +11,7 @@ import { useTina, tinaField } from "tinacms/dist/react";
 function NewsletterLinks({ index, data }) {
   const { data: { page: { blocks }} } = useTina(data)
   const block = blocks[index]
-  
+
   if (!block || !Array.isArray(block.newsletterItems)) {
     return (
       <p>No newsletters currently available</p>
@@ -28,8 +28,8 @@ function NewsletterLinks({ index, data }) {
             <li
               key={item.publishedDate?.trim()}
               className="border-t-slate-400 border-t relative list-none first:border-t-0 [&:last-child>a]:pb-0 transition-all ease-in-out duration-150 hover:scale-[1.01]  [&:hover>a]:text-purple-900"
-              
-                  data-tina-Field={tinaField(block, "swayLink")}
+
+              data-tina-field={tinaField(block, "swayLink")}
             >
               <Link
                 href={item.swayLink}

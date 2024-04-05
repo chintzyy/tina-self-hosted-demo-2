@@ -10,7 +10,7 @@
     "paths": {
       "~/components/*": [ "components/*" ],
       "@/tina/*": [ "tina/*" ],
-      "@/utils*": ["utils/*"], 
+      "~/utils*": ["utils/*"], 
     },
     
     "allowJs": true,
