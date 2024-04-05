@@ -5,15 +5,17 @@ import env from '../../../utils/env.mjs'
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 
+export const authJSProvider = AuthJsBackendAuthProvider({
+  authOptions: TinaAuthJSOptions({
+    databaseClient: databaseClient,
+    secret: env.NEXTAUTH_SECRET!,
+  }),
+})
+
 const handler = TinaNodeBackend({
   authProvider: isLocal
     ? LocalBackendAuthProvider()
-    : AuthJsBackendAuthProvider({
-        authOptions: TinaAuthJSOptions({
-          databaseClient: databaseClient,
-          secret: env.NEXTAUTH_SECRET!,
-        }),
-      }),
+    : authJSProvider,
   databaseClient,
 });
 
