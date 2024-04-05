@@ -27,7 +27,6 @@ export const ImageGallery = ({ data, index }: { data: PageBlocksImageGallery }) 
             block.gallery?.map(( item, i ) => {
               const prevImage = item.images && item.images.length ? item.images[0].src : null
               if (!item.title || !item.images || item.images?.length < 1 || !prevImage) return null
-              console.log('item: ', item, block.gallery, block)
 
               return (
                 <li

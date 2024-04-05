@@ -40,7 +40,6 @@ const GalleryTiles = (props) => {
   .find(item => item.__typename === 'PageBlocksImageGallery').gallery
   .find(item => item.slug === props.slug)
   
-  console.log({gallery, props})
 
   if (!gallery?.images) {
     return <Placeholder message="No photos have been added to this gallery. Please add some photos for the component to show." />

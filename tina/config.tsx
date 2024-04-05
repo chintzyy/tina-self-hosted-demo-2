@@ -23,7 +23,7 @@ export default defineConfig({
   media: {
     loadCustomStore: async () => {
       const pack = await import('next-tinacms-s3')
-      return pack.TinaCloudS3MediaStore
+      return pack.S3MediaStore
     },
   },
   schema: {
