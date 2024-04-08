@@ -8,7 +8,7 @@ tagline: ''
 description: 'Welcome to Dardanup Primary School, Western Australia'
 backgroundImage: >-
   https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/background-images/homepage.jpg
-lastUpdated: '2024-04-04T14:51:06.423Z'
+lastUpdated: '2024-04-08T00:10:09.901Z'
 blocks:
   - homeBox:
       - icon: BiSolidSchool
@@ -20,7 +20,7 @@ blocks:
           "2023 - 2025 Dardanup Primary Business Plan.pdf")
       - icon: BiCalendar
         color: white
-        title: 2024 Term Dates
+        title: 2024 Term Dates!!
         body: "Term 1 2024: January 31 - March 28\_\\\nTerm 2 2024: April 16 - June 28\\\nTerm 3 2024: July 15 - September 20\\\nTerm 4 2024: October 7 - December 12.\n"
       - icon: BiTime
         color: white
