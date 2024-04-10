@@ -12,7 +12,7 @@ import { useTina, tinaField , } from "tinacms/dist/react";
 export const ImageGallery = ({ data, index }: { data: PageBlocksImageGallery }) => {
   const { data: { page: { blocks }} } = useTina(data)
   if (index === undefined || index === null || blocks.length < 1) return null
-  
+
   const block = blocks[index]
   if (!block) return null
 
@@ -105,6 +105,14 @@ export const imageGalleryBlockSchema = {
           name: "images",
           list: true,
           defaultItem: () => ({ meta: { height: null, width: null }}),
+          ui: {
+            itemProps: (item) => {
+              console.log('ui image/src itemProps: ', item)
+              return {
+                label: item?.meta?.large?.id,
+              };
+            },
+          },
           fields: [
             {
               type: "image",

@@ -4,9 +4,88 @@ tagline: Dardanup 100 year anniversary with the students
 description: See the colours and images of Dardanup Primary School
 backgroundImage: >-
   https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/background-images/roots-logs.jpg
-lastUpdated: '2024-04-04T07:36:35.487Z'
+lastUpdated: '2024-04-08T15:52:33.148Z'
 blocks:
   - gallery:
+      - title: Vex Robotics
+        publishedDate: 2024-04-07T16:00:00.000Z
+        slug: vex-robotics
+        images:
+          - src: >-
+              https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/image-galleries/vex-robotics/Vex-4.png
+            meta:
+              thumb:
+                src: >-
+                  https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/gallery/Vex-4-thumb.jpg
+                width: 400
+                height: 267
+                id: Vex-4-thumb
+              large:
+                src: >-
+                  https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/gallery/Vex-4-large.jpg
+                width: 1600
+                height: 1067
+                id: Vex-4-large
+          - src: >-
+              https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/image-galleries/vex-robotics/Vex-13.png
+            meta:
+              thumb:
+                src: >-
+                  https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/gallery/Vex-13-thumb.jpg
+                width: 400
+                height: 600
+                id: Vex-13-thumb
+              large:
+                src: >-
+                  https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/gallery/Vex-13-large.jpg
+                width: 1600
+                height: 2400
+                id: Vex-13-large
+          - src: >-
+              https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/image-galleries/vex-robotics/Vex-23.png
+            meta:
+              thumb:
+                src: >-
+                  https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/gallery/Vex-23-thumb.jpg
+                width: 400
+                height: 600
+                id: Vex-23-thumb
+              large:
+                src: >-
+                  https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/gallery/Vex-23-large.jpg
+                width: 1600
+                height: 2400
+                id: Vex-23-large
+          - src: >-
+              https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/image-galleries/vex-robotics/Vex-2.png
+            meta:
+              thumb:
+                src: >-
+                  https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/gallery/Vex-2-thumb.jpg
+                width: 400
+                height: 267
+                id: Vex-2-thumb
+              large:
+                src: >-
+                  https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/gallery/Vex-2-large.jpg
+                width: 1600
+                height: 1067
+                id: Vex-2-large
+          - src: >-
+              https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/image-galleries/vex-robotics/Vex-57.png
+            meta:
+              thumb:
+                src: >-
+                  https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/gallery/Vex-57-thumb.jpg
+                width: 400
+                height: 600
+                id: Vex-57-thumb
+              large:
+                src: >-
+                  https://dardanup-tina-assets.s3.ap-southeast-1.amazonaws.com/gallery/Vex-57-large.jpg
+                width: 1600
+                height: 2400
+                id: Vex-57-large
       - title: Maypole
         publishedDate: 2024-04-03T16:00:00.000Z
         slug: maypole
