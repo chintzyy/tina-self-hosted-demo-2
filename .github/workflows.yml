@@ -1,0 +1,39 @@
+name: Cancel Vercel Deployments if one already running
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  cancel-deployments:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check commit messages
+        id: check_commit
+        run: echo ::set-output name=message::$(git log --format=%B -n 1 ${{ github.sha }})
+
+      - name: Check if commit message contains "Edited with TinaCMS"
+        id: check_tina_commit
+        run: echo ::set-output name=is_tina_commit::$(echo "${{ steps.check_commit.outputs.message }}" | grep -c "Edited with TinaCMS")
+
+      - name: Make GET request to Vercel API
+        if: steps.check_tina_commit.outputs.is_tina_commit == '1'
+        id: get_deployments
+        run: |
+          DEPLOYMENTS=$(curl -X GET -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" "https://api.vercel.com/v6/deployments?state=BUILDING")
+          echo "::set-output name=deployments::${DEPLOYMENTS}"
+
+      - name: Cancel Deployments
+        if: steps.check_tina_commit.outputs.is_tina_commit == '1' && steps.get_deployments.outputs.deployments != '[]'
+        id: cancel_deployments
+        run: |
+          for row in $(echo "${{ steps.get_deployments.outputs.deployments }}" | jq -r '.[] | @base64'); do
+            _jq() {
+              echo ${row} | base64 --decode | jq -r ${1}
+            }
+
+            DEPLOYMENT_ID=$(_jq '.id')
+            curl -X PATCH -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" https://api.vercel.com/v6/now/deployments/$DEPLOYMENT_ID -d '{"state":"CANCELLED"}'
+          done
