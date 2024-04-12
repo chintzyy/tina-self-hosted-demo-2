@@ -1,4 +1,4 @@
-name: Cancel Vercel Deployments if one already running
+name: Cancel Vercel Deployments
 
 on:
   push:
@@ -22,18 +22,18 @@ jobs:
         if: steps.check_tina_commit.outputs.is_tina_commit == '1'
         id: get_deployments
         run: |
-          DEPLOYMENTS=$(curl -s -X GET -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" "https://api.vercel.com/v6/deployments?state=BUILDING")
+          DEPLOYMENTS=$(curl -X GET -H "Authorization: Bearer ${{ secrets.VERCEL_API_SECRET }}" "https://api.vercel.com/v6/deployments?state=BUILDING")
           echo "::set-output name=deployments::${DEPLOYMENTS}"
 
       - name: Cancel Deployments
         if: steps.check_tina_commit.outputs.is_tina_commit == '1' && steps.get_deployments.outputs.deployments != '[]'
         id: cancel_deployments
         run: |
-          for row in $(echo "${{ steps.get_deployments.outputs.deployments }}" | jq -r '.deployments[] | @base64'); do
+          for row in $(echo "${{ steps.get_deployments.outputs.deployments }}" | jq -r '.[] | @base64'); do
             _jq() {
               echo ${row} | base64 --decode | jq -r ${1}
             }
 
-            DEPLOYMENT_ID=$(_jq '.uid')
-            curl -X PATCH -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" "https://api.vercel.com/v11/now/deployments/${DEPLOYMENT_ID}" -d '{"state":"CANCELED"}'
+            DEPLOYMENT_ID=$(_jq '.id')
+            curl -X PATCH -H "Authorization: Bearer ${{ secrets.VERCEL_API_SECRET }}" https://api.vercel.com/v6/now/deployments/$DEPLOYMENT_ID -d '{"state":"CANCELLED"}'
           done
