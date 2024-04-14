@@ -25,28 +25,33 @@ export const ImageGallery = ({ data, index }: { data: PageBlocksImageGallery }) 
         <ul className="list-none flex flex-wrap">
           {
             block.gallery?.map(( item, i ) => {
-              const prevImage = item.images && item.images.length ? item.images[0].src : null
-              if (!item.title || !item.images || item.images?.length < 1 || !prevImage) return null
+              const prevImage = item.images && item.images.length ? item.images[0].meta : null
+              if (!item.title || !item.images || item.images?.length < 1 || !prevImage.thumb.src) return null
+              console.log({prevImage})
 
               return (
-                <li
+                <Link
                   key={item.title}
-                  className="w-fit max-w-80 list-none shadow-lg bg-white p-2"
-                  data-tina-field={tinaField(block.gallery[i], 0)}
-                >
-                  <div className="relative w-64 h-64">
-                    <Link href={`/photo-gallery/${item.slug}`}> 
+                  href={`/photo-gallery/${item.slug}`}
+                > 
+                  <li
+                    className="w-fit max-w-80 list-none shadow-lg bg-white p-2 mb-3"
+                    data-tina-field={tinaField(block.gallery[i], 0)}
+                  >
+                    <div className="relative w-64 h-56 overflow-hidden">
                       <Image
                         alt={item.title}
-                        src={prevImage}
-                        fill
+                        src={prevImage.thumb.src}
+                        width={prevImage.thumb.width}
+                        height={prevImage.thumb.height}
+                        objectFit="cover"
                       />
-                    </Link>
-                  </div>
-                  <footer className="flex justify-center items-center pt-3 pb-5">
-                    <span className="text-sm">{item.title}</span>
-                  </footer>
-                </li>
+                    </div>
+                    <footer className="flex justify-center items-center pt-3 pb-5">
+                      <span className="text-sm">{item.title}</span>
+                    </footer>
+                  </li>
+                </Link>
               )
             })
           }

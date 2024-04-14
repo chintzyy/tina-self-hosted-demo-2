@@ -6,34 +6,70 @@ on:
       - main
 
 jobs:
-  cancel-deployments:
+  cancel_deployments:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check commit messages
-        id: check_commit
-        run: echo ::set-output name=message::$(git log --format=%B -n 1 ${{ github.sha }})
-
       - name: Check if commit message contains "Edited with TinaCMS"
-        id: check_tina_commit
-        run: echo ::set-output name=is_tina_commit::$(echo "${{ steps.check_commit.outputs.message }}" | grep -c "Edited with TinaCMS")
-
-      - name: Make GET request to Vercel API
-        if: steps.check_tina_commit.outputs.is_tina_commit == '1'
-        id: get_deployments
+        id: check_commit_message
         run: |
-          DEPLOYMENTS=$(curl -X GET -H "Authorization: Bearer ${{ secrets.VERCEL_API_SECRET }}" "https://api.vercel.com/v6/deployments?state=BUILDING")
-          echo "::set-output name=deployments::${DEPLOYMENTS}"
+          if git log --name-only --pretty=format:"%s" -n 1 ${{ github.sha }} | grep -q "Edited with TinaCMS"; then
+            echo "::set-output name=message::Commit message contains 'Edited with TinaCMS'"
+          else
+            echo "::set-output name=message::Commit message does not contain 'Edited with TinaCMS'"
+            exit 1
+          fi
+      - name: Check for Building Deployments
+        id: check_deployments
+        run: |
+          const fetch = require('node-fetch');
 
+          async function checkDeployments() {
+            const response = await fetch('https://api.vercel.com/v6/deployments', {
+              headers: {
+                Authorization: `Bearer ${process.env.VERCEL_API_SECRET}`
+              }
+            });
+            const data = await response.json();
+            const buildingDeployments = data.deployments.filter(deployment => deployment.state === 'BUILDING');
+            return buildingDeployments.length > 0;
+          }
+
+          checkDeployments().then(result => {
+            console.log(`::set-output name=building_deployments::${result}`);
+          }).catch(error => {
+            console.error(error);
+            process.exit(1);
+          });
+        env:
+          VERCEL_API_SECRET: ${{ secrets.VERCEL_API_SECRET }}
       - name: Cancel Deployments
-        if: steps.check_tina_commit.outputs.is_tina_commit == '1' && steps.get_deployments.outputs.deployments != '[]'
-        id: cancel_deployments
+        if: steps.check_commit_message.outputs.message == 'Commit message contains \'Edited with TinaCMS\'' && steps.check_deployments.outputs.building_deployments == 'true'
         run: |
-          for row in $(echo "${{ steps.get_deployments.outputs.deployments }}" | jq -r '.[] | @base64'); do
-            _jq() {
-              echo ${row} | base64 --decode | jq -r ${1}
-            }
+          const fetch = require('node-fetch');
 
-            DEPLOYMENT_ID=$(_jq '.id')
-            curl -X PATCH -H "Authorization: Bearer ${{ secrets.VERCEL_API_SECRET }}" https://api.vercel.com/v6/now/deployments/$DEPLOYMENT_ID -d '{"state":"CANCELLED"}'
-          done
+          async function cancelDeployments() {
+            const response = await fetch('https://api.vercel.com/v6/deployments', {
+              headers: {
+                Authorization: `Bearer ${process.env.VERCEL_API_SECRET}`
+              }
+            });
+            const data = await response.json();
+            const deploymentIds = data.deployments.filter(deployment => deployment.state === 'BUILDING').map(deployment => deployment.id);
+            for (const id of deploymentIds) {
+              await fetch(`https://api.vercel.com/v6/deployments/${id}`, {
+                method: 'PATCH',
+                headers: {
+                  Authorization: `Bearer ${process.env.VERCEL_API_SECRET}`,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ state: 'CANCELLED' })
+              });
+            }
+          }
+
+          cancelDeployments().catch(error => {
+            console.error(error);
+            process.exit(1);
+          });
+        env:
+          VERCEL_API_SECRET: ${{ secrets.VERCEL_API_SECRET }}
